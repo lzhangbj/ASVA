@@ -58,13 +58,12 @@ export PYTHONPATH=$PYTHONPATH:$(pwd):$(pwd)/submodules/ImageBind
 ### Download required features/models
 
 * [ImageBind](https://github.com/facebookresearch/ImageBind?fbclid=IwAR2fU8mKKsOLCsqZsP8vn6nbzC5XwksXLuIpAWOaEZ6jQTQWGncQp6FfPc8): Pretrained frozen audio encoder
-Please download the following pretrained model weights under folder `pretrained/`
 * [I3D](https://www.dropbox.com/s/ge9e5ujwgetktms/i3d_torchscript.pt): Evaluating FVD
 * [Stable Diffusion V1.5](https://huggingface.co/runwayml/stable-diffusion-v1-5): Load pretrained image generation model
 * [AVID-CMA](https://dl.fbaipublicfiles.com/avid-cma/checkpoints/AVID-CMA_Audioset_InstX-N1024-PosW-N64-Top32_checkpoint.pth.tar): Initialize AVSync Classifier's encoders
 * [Precomputed null text encodings](https://drive.google.com/file/d/1fuKlVKdR9tw2wFE3RShH6jRjnvxPNR5u/view?usp=sharing): Ease of computatoin
 
-They should be structured as following:
+Please download and structure them as following:
 ```angular2html
 - submodules/
     - ImageBind/
@@ -148,7 +147,7 @@ They should be structured as following:
 |-------------------|---------|-----------------|-----------------------|--------------|--------------|
 | AVSync Classifier | VGGSS   | [GoogleDrive](https://drive.google.com/file/d/1Paqjad4a8mjujMJBEYqmnNEgGPi595lb/view?usp=sharing) | [Link](configs/avsync/vggss_sync_contrast.yaml) | 40.76        | 40.86        |
 
-They should be structured as following:
+Please download checkpoints you need and structure them as following:
 ```angular2html
 - checkpoints/
     - audio-cond_animation/
@@ -195,10 +194,10 @@ Optionally, we precomputed two files for ease of computation:
 Download these files from [GoogleDrive](https://drive.google.com/drive/folders/1rGPBiswIVBgZj5BUViGRWePxEEdq21p6?usp=sharing), and place them under `datasets/` folder.
 
 To download videos:
-* AVSync15: download videos from link above
-* Landscapes: download videos from [MMDiffusion](https://drive.google.com/drive/folders/14A1zaQI5EfShlv3QirgCGeNFzZBzQ3lq?usp=sharing). 
-* TheGreatestHits: download videos from [Visually Indicated Sounds](https://andrewowens.com/vis/).
-* VGGSS: for AVSync classifier training/evaluation, download videos from [VGGSound](https://www.robots.ox.ac.uk/~vgg/data/vggsound/). Only videos listed in `train.txt` and `test.txt` are needed.
+* **AVSync15**: download videos from link above
+* **Landscapes**: download videos from [MMDiffusion](https://drive.google.com/drive/folders/14A1zaQI5EfShlv3QirgCGeNFzZBzQ3lq?usp=sharing). 
+* **TheGreatestHits**: download videos from [Visually Indicated Sounds](https://andrewowens.com/vis/).
+* **VGGSS**: for AVSync classifier training/evaluation, download videos from [VGGSound](https://www.robots.ox.ac.uk/~vgg/data/vggsound/). Only videos listed in `train.txt` and `test.txt` are needed.
 
 Overall, the `datasets` folder has the following structure
 ```angular2html
@@ -267,15 +266,15 @@ bash scripts/animation_test_avsync15.sh checkpoints/audio-cond_animation/avsync1
 ## 6. Train and evaluate AVSync Classifier
 
 ### Train
-AVSync Clasifier is trained on VGGSS training split for 4 days, 8 RTX-A4500 GPUs, and batchsize 32.
+AVSync Classifier is trained on VGGSS training split for 4 days, 8 RTX-A4500 GPUs, and batchsize 32.
 ```angular2html
 PYTHONWARNINGS="ignore" accelerate launch scripts/avsync_train.py --config_file configs/avsync/vggss_sync_contrast.yaml
 ```
 
 ### Evaluation
-We followed VGGSoundSync to sample 31 clips with 0.04-s gaps on each video. 
+We follow [VGGSoundSync](https://www.robots.ox.ac.uk/~vgg/research/avs/) to sample 31 clips from each video, with 0.04-s gap between neighboring clips. 
 Given the audio/video clip at the center, we predict its synchronized video/audio clip's index.
-A tolerate range of 5 is applied, since human is tolerant to 0.2s asynchronous.
+A tolerate range of 5 is applied, since human is tolerant to 0.2s asynchrony.
 
 For example, to evaluate our pretrained AVSync Classifier on 8 GPUs, run:
 ```angular2html
