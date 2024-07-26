@@ -47,36 +47,41 @@ def compute_avsync_scores(audios, videos, net):
 
 
 @torch.no_grad()
-def compute_relsync(audios, groundtruth_videos, generated_videos, net):
+def compute_relsync(audios, videos, net, ref_audios=None, ref_videos=None):
 	'''
 		videos in shape BCTHW in [0., 1.]
 	'''
-	groundtruth_videos = preprocess_videos(groundtruth_videos)
-	generated_videos = preprocess_videos(generated_videos)
+	assert (ref_audios is None) ^ (ref_videos is None), "Please specify either ref_audios or ref_videos"
 	
-	groundtruth_avsync_scores = net(audios, groundtruth_videos)
-	generated_avsync_scores = net(audios, generated_videos)
+	videos = preprocess_videos(videos)
+	avsync_scores = net(audios, videos)
 	
-	cat_scores = torch.stack([groundtruth_avsync_scores, generated_avsync_scores], dim=1) # (b, 2)
+	if ref_audios is not None:
+		ref_avsync_scores = net(ref_audios, videos)
+	else:
+		ref_videos = preprocess_videos(ref_videos)
+		ref_avsync_scores = net(audios, ref_videos)
+	
+	cat_scores = torch.stack([ref_avsync_scores, avsync_scores], dim=1) # (b, 2)
 	relsync = torch.softmax(cat_scores, dim=1)[:, 1].contiguous().detach().cpu()
 
 	return relsync
 
 
 @torch.no_grad()
-def compute_alignsync(audios, groundtruth_videos, generated_videos, net, clip_net):
+def compute_alignsync(audios, videos, ref_videos, net, clip_net):
 	'''
 		videos in shape BCTHW in [0., 1.],
 		audios in shape BCNT
 	'''
 
-	f = groundtruth_videos.shape[2]
+	f = videos.shape[2]
 	
-	relsync = compute_relsync(audios, groundtruth_videos, generated_videos, net)
+	relsync = compute_relsync(audios, videos, net, ref_videos=ref_videos)
 	
 	# Compute AlignProb
 	videos = torch.cat([
-		groundtruth_videos[:, :, 0:1], generated_videos[:, :, 1:]
+		ref_videos[:, :, 0:1], videos[:, :, 1:]
 	], dim=2)
 	videos = rearrange(videos, "b c f h w -> b f c h w")
 	videos, audios, _ = clip_preprocess_videos(videos, audios)
@@ -102,7 +107,9 @@ def compute_sync_metrics_on_av(
 	audio_waveform: torch.Tensor,
 	audio_sr: int,
 	video: torch.Tensor,
-	groundtruth_video: Optional[torch.Tensor] = None,
+	ref_audio_waveform: Optional[torch.Tensor] = None,
+	ref_audio_sr: Optional[int] = None,
+	ref_video: Optional[torch.Tensor] = None,
 	metric: str = "alignsync",
 	device: torch.device = torch.device("cuda"),
 	dtype: torch.dtype = torch.float32
@@ -111,15 +118,20 @@ def compute_sync_metrics_on_av(
 		audio_waveform: loaded audio in shape (c t)
 		audio_sr: sampling rate of loaded audio_waveforms
 		video: input videos in shape (c t h w) in [0, 1]
-		groundtruth_video: reference video in same shape as videos, only needed when computing relsyn/alignsync
+		ref_audio_waveform: reference audio in  shape (c t), only used in relsync
+		ref_audio_sr: reference audio' sampling rate. By default the same value as audio_sr
+		ref_video: reference video in same shape as videos, only needed when computing relsyn/alignsync
 		metric: 'alignsync', 'relsync', 'avsync_score'
 	'''
 	c, t, h, w = video.shape
 	assert t == 12, "video should have 12 frames in 6 FPS"
 	assert metric in ['alignsync', 'relsync', 'avsync_score']
-	if metric in ['relsync', 'alignsync']:
-		assert groundtruth_video is not None and groundtruth_video.shape == video.shape, \
-			f"To compute {metric}, groundtruth_video is needed as reference, and in same shape as video"
+	if metric == 'alignsync':
+		assert ref_video is not None and ref_video.shape == video.shape, \
+			f"To compute alignsync, ref_video is needed as reference, and in same shape as video"
+	if metric == "relsync":
+		assert (ref_audio_waveform is None) ^ (ref_video is None), \
+			f"To compute relsync, either ref_audio_waveform or ref_video is needed as reference"
 	
 	avsync_net = load_avsync_model().to(device=device, dtype=dtype)
 	if metric == "alignsync":
@@ -128,17 +140,32 @@ def compute_sync_metrics_on_av(
 	# Convert audio into melspectrogram
 	audio = torchaudio.functional.resample(audio_waveform, orig_freq=audio_sr, new_freq=16000)  # (c, t)
 	audio = waveform_to_melspectrogram(audio)  # (1, n, t)
-	
 	audio = audio.unsqueeze(0).contiguous().to(device=device, dtype=dtype)
 	video = video.unsqueeze(0).contiguous().to(device=device, dtype=dtype)
-	if groundtruth_video is not None:
-		groundtruth_video = groundtruth_video.unsqueeze(0).contiguous().to(device=device, dtype=dtype)
 	
 	if metric == "alignsync":
-		return compute_alignsync(audio, groundtruth_video, video, avsync_net, clip_net)[0]
-	elif metric == "relsync":
-		return compute_relsync(audio, groundtruth_video, video, avsync_net)[0]
+		# Computing alignsync by referring an video
+		ref_video = ref_video.unsqueeze(0).contiguous().to(device=device, dtype=dtype)
 
+		return compute_alignsync(audio, video, ref_video, avsync_net, clip_net)[0]
+	
+	elif metric == "relsync":
+		if ref_audio_waveform is not None:
+			# Compute relsync by referring an audio
+			if ref_audio_sr is None:
+				ref_audio_sr = audio_sr
+			ref_audio = torchaudio.functional.resample(ref_audio_waveform, orig_freq=ref_audio_sr, new_freq=16000)  # (c, t)
+			ref_audio = waveform_to_melspectrogram(ref_audio)  # (1, n, t)
+			ref_audio = ref_audio.unsqueeze(0).contiguous().to(device=device, dtype=dtype)
+			
+			return compute_relsync(audio, video, avsync_net, ref_audios=ref_audio)[0]
+		else:
+			# Compute relsync by referring an video
+			ref_video = ref_video.unsqueeze(0).contiguous().to(device=device, dtype=dtype)
+			
+			return compute_relsync(audio, video, avsync_net, ref_videos=ref_video)[0]
+		
+	# computing raw avsync score
 	return compute_avsync_scores(audio, video, avsync_net)[0]
 	
 	

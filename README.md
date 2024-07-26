@@ -174,11 +174,29 @@ python -W ignore scripts/animation_demo.py --dataset AVSync15 --category "machin
     <img src="assets/generation_lion_shooting_gun.gif" alt="Lion shooting gun">
 </div>
 
-### Compute sync metrics for generated video
-To compute `alignsync` and `relsync`, a `groundtruth_video` should be input as reference.
-To compute `avsync_score`, only `audio` and `video` are needed.
+### Compute sync metrics for audio-video pairs
+We have 3 metrics:
+
+#### AVSync score
+Raw output value of the avsync classifier for an input (audio, video) pair. It is in range (-\inf, \inf).
 ```angular2html
-python -W ignore scripts/avsync_metric.py --metric alignsync --audio {audio path} --video {generated video path} --groundtruth_video {groundtruth video path}
+python -W ignore scripts/avsync_metric.py --metric avsync_score --audio {audio path} --video {video path}
+```
+#### RelSync
+Measures synchronization of an (audio, video) pair by using a reference.
+
+To measure synchronization audio generation, the reference is a groundtruth audio
+```angular2html
+python -W ignore scripts/avsync_metric.py --metric relsync --audio {generated audio path} --video {video path} --ref_audio {groundtruth audio path}
+```
+To measure synchronization video generation, the reference is a groundtruth video.
+```angular2html
+python -W ignore scripts/avsync_metric.py --metric relsync --audio {audio path} --video {generated video path} --ref_video {groundtruth video path}
+```
+#### AlignSync
+Measures synchronization of an (audio, video) pair by using a reference video. It is only used to measure sync for video generation.
+```angular2html
+python -W ignore scripts/avsync_metric.py --metric alignsync --audio {audio path} --video {generated video path} --ref_video {groundtruth video path}
 ```
 
 ## 4. Download datasets
