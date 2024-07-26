@@ -1,18 +1,27 @@
-<h1 align="center">Audio-Synchronized Visual Animation</h1>
-<h2 align="center">ECCV 2024</h2>
-<h3 align="center">Lin Zhang, Shentong Mo, Yijing Zhang, Pedro Morgado</h3>
-
 <div align="center">
+
+<strong style="font-size: 28px;">Audio-Synchronized Visual Animation</strong>
+
 <a href=https://arxiv.org/abs/2403.05659><img src="https://img.shields.io/badge/arXiv-2008.00951-b31b1b.svg"></a> &nbsp;
 <a href='https://lzhangbj.github.io/projects/asva/asva.html'><img src='https://img.shields.io/badge/Project-Page-Green'></a> &nbsp;
 <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
-</div>
 
-<p align="center">
+<p style="font-size: 15px;">
+<a href="https://lzhangbj.github.io/">Lin Zhang</a>, 
+<a href="https://scholar.google.com/citations?user=6aYncPAAAAAJ">Shentong Mo</a>, 
+<a href="https://yijingz02.github.io/">Yijing Zhang</a>, 
+<a href="https://pedro-morgado.github.io/">Pedro Morgado</a>
+</p>
+
+<strong style="font-size: 18px;">ECCV 2024</strong>
+
+<p>
   <a href="https://www.youtube.com/watch?v=Z8IW09yggRk">
     <img src="https://img.youtube.com/vi/Z8IW09yggRk/0.jpg" alt="Watch this video" />
   </a>
 </p>
+
+</div>
 
 ### Checklist
 - [x] Release pretrained checkpoints
