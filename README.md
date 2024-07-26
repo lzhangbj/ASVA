@@ -194,7 +194,7 @@ Optionally, we precomputed two files for ease of computation:
 Download these files from [GoogleDrive](https://drive.google.com/drive/folders/1rGPBiswIVBgZj5BUViGRWePxEEdq21p6?usp=sharing), and place them under `datasets/` folder.
 
 To download videos:
-* **AVSync15**: download videos from link above
+* **AVSync15**: download videos from link above. (**Last update: July 26 2024**)
 * **Landscapes**: download videos from [MMDiffusion](https://drive.google.com/drive/folders/14A1zaQI5EfShlv3QirgCGeNFzZBzQ3lq?usp=sharing). 
 * **TheGreatestHits**: download videos from [Visually Indicated Sounds](https://andrewowens.com/vis/).
 * **VGGSS**: for AVSync classifier training/evaluation, download videos from [VGGSound](https://www.robots.ox.ac.uk/~vgg/data/vggsound/). Only videos listed in `train.txt` and `test.txt` are needed.
