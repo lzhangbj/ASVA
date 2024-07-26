@@ -272,6 +272,14 @@ For example, to evaluate our pretrained AVSync Classifier on 8 GPUs, run:
 ```angular2html
 PYTHONWARNINGS="ignore" accelerate launch --num_processes=8 scripts/avsync_eval.py --checkpoint checkpoints/avsync/vggss_sync_contrast/ckpts/checkpoint-40000/modules --mixed_precision fp16 
 ```
+=======
+# Audio-Synchronized Visual Animation (ECCV 2024)
+<a href=https://arxiv.org/abs/2403.05659><img src="https://img.shields.io/badge/arXiv-2008.00951-b31b1b.svg"></a> &nbsp;
+<a href='https://lzhangbj.github.io/projects/asva/asva.html'><img src='https://img.shields.io/badge/Project-Page-Green'></a> &nbsp;
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
+
+## Code coming in July 2024!
+>>>>>>> f8e2c734d060e6bc8c4efae310939012201945f6
 
 ## Citation
 Please consider citing our paper if you find this repo useful:
