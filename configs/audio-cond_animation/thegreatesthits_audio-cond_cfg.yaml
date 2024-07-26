@@ -1,0 +1,77 @@
+exp:
+  output_dir: "exps/audio-cond_animation/thegreatesthits_audio-cond_cfg"
+  project_dir: "exps/audio-cond_animation/thegreatesthits_audio-cond_cfg/log"
+  log_file: "exps/audio-cond_animation/thegreatesthits_audio-cond_cfg/train.log"
+  log_with: "wandb"
+  seed: 123
+
+model:
+  scheduler:
+    name: "DDPMScheduler"
+    beta_start: 0.00085
+    beta_end: 0.012
+    beta_schedule: "scaled_linear"
+    dynamic_thresholding_ratio: 0.995
+    num_train_timesteps: 1000
+    prediction_type: epsilon
+    steps_offset: 1
+    clip_sample: False
+    sample_max_value: 1.0
+    thresholding: false
+    trained_betas: null
+  audio_encoder:
+    name: "ImageBindSegmaskAudioEncoder"
+    n_segment: 12
+  vae:
+    name: "AutoencoderKL"
+    pretrained_model_name_or_path: "./pretrained/stable-diffusion-v1-5"
+    subfolder: "vae"
+  unet:
+    pretrained_model_name_or_path: "./pretrained/stable-diffusion-v1-5"
+    down_block_types: ["FFSpatioAudioTempCrossAttnDownBlock3D", "FFSpatioAudioTempCrossAttnDownBlock3D", "FFSpatioAudioTempCrossAttnDownBlock3D", "FFSpatioTempResDownBlock3D"]
+    up_block_types: ["FFSpatioTempResUpBlock3D", "FFSpatioAudioTempCrossAttnUpBlock3D", "FFSpatioAudioTempCrossAttnUpBlock3D", "FFSpatioAudioTempCrossAttnUpBlock3D"]
+    mid_block_type: "FFSpatioAudioTempCrossAttnUNetMidBlock3D"
+    train_image_modules: False
+    trainable_modules: ["_temp", "_audio"]
+  audio_cond_drop_prob: 0.2
+  text_cond_drop_prob: 0.0
+  image_cond_drop_prob: 0.0
+  loss_on_first_frame: False
+
+train:
+  dataset_name: "base_audio_video"
+  batch_size: 16
+  log_steps: 10
+  dataset:
+    data_root: "./datasets/TheGreatestHits/videos"
+    example_list_path: "./datasets/TheGreatestHits/train.txt"
+    example_list_type: "video"
+    mode: "train"
+    img_size: [128, 256]
+    randflip: True
+    randcrop: False
+    video_fps: 6
+    video_num_frame: 12
+    class_mapping_json: ""
+    class_text_encoding_mapping_pt: "./datasets/TheGreatestHits/class_clip_text_encodings_stable-diffusion-v1-5.pt"
+
+# optimizer
+optim:
+  max_train_steps: 68000
+  learning_rate: 1e-4
+  scale_lr: False
+  lr_scheduler: "constant"
+  lr_warmup_steps: 10
+  adam_beta1: 0.9
+  adam_beta2: 0.999
+  adam_weight_decay: 1e-2
+  adam_epsilon: 1e-08
+  max_grad_norm: 1.0
+  gradient_accumulation_steps: 1
+  checkpointing_steps: 1000
+  checkpointing_milestones: 16000
+  resume_from_checkpoint: "latest"
+  mixed_precision: "fp16"
+  use_8bit_adam: False
+  enable_gradient_checkpoint: True
+

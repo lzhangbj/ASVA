@@ -1,0 +1,7 @@
+.checkpoints/
+
+submodules/
+datasets/
+checkpoints/
+wandb/
+pretrained/
