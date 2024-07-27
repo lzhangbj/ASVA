@@ -5,23 +5,24 @@
 <a href=https://arxiv.org/abs/2403.05659><img src="https://img.shields.io/badge/arXiv-2008.00951-b31b1b.svg"></a> &nbsp;
 <a href='https://lzhangbj.github.io/projects/asva/asva.html'><img src='https://img.shields.io/badge/Project-Page-Green'></a> &nbsp;
 <a href='https://huggingface.co/spaces/Linz99/ASVA'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face%20-Demo-blue'></a>&nbsp;
+<a href='https://www.youtube.com/watch?v=Z8IW09yggRk'><img src='https://img.shields.io/badge/Youtube-Video-b31b1b.svg'></a><br>
 <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
 
 
-<p style="font-size: 15px;">
-<a href="https://lzhangbj.github.io/">Lin Zhang</a>, 
-<a href="https://scholar.google.com/citations?user=6aYncPAAAAAJ">Shentong Mo</a>, 
-<a href="https://yijingz02.github.io/">Yijing Zhang</a>, 
-<a href="https://pedro-morgado.github.io/">Pedro Morgado</a>
+<p style="font-size: 18px;">
+<a href="https://lzhangbj.github.io/">Lin Zhang<sup>1</sup></a>,
+<a href="https://scholar.google.com/citations?user=6aYncPAAAAAJ">Shentong Mo<sup>2</sup></a>, 
+<a href="https://yijingz02.github.io/">Yijing Zhang<sup>1</sup></a>, 
+<a href="https://pedro-morgado.github.io/">Pedro Morgado<sup>1</sup></a>
 </p>
 
-<strong style="font-size: 18px;">ECCV 2024</strong>
-
-<p>
-  <a href="https://www.youtube.com/watch?v=Z8IW09yggRk">
-    <img src="https://img.youtube.com/vi/Z8IW09yggRk/0.jpg" alt="Watch this video" />
-  </a>
+<p style="font-size: 18px;">
+University of Wisconsin Madison<sup>1</sup><br>
+Carnegie Mellon University<sup>2</sup>
 </p>
+
+
+<strong style="font-size: 25px;">ECCV 2024</strong>
 
 </div>
 
