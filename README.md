@@ -9,17 +9,18 @@
 <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
 
 
-<p style="font-size: 18px;">
+<strong style="font-size: 18px;">
 <a href="https://lzhangbj.github.io/">Lin Zhang<sup>1</sup></a>,
 <a href="https://scholar.google.com/citations?user=6aYncPAAAAAJ">Shentong Mo<sup>2</sup></a>, 
 <a href="https://yijingz02.github.io/">Yijing Zhang<sup>1</sup></a>, 
 <a href="https://pedro-morgado.github.io/">Pedro Morgado<sup>1</sup></a>
-</p>
+</strong>
+<br>
 
-<p style="font-size: 18px;">
+<strong style="font-size: 18px;">
 University of Wisconsin Madison<sup>1</sup><br>
 Carnegie Mellon University<sup>2</sup>
-</p>
+</strong>
 
 
 <strong style="font-size: 25px;">ECCV 2024</strong>
