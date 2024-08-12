@@ -26,7 +26,8 @@ Carnegie Mellon University<sup>2</sup>
 </p>
 
 
-<strong style="font-size: 25px;">ECCV 2024</strong>
+<strong style="font-size: 25px;">ECCV 2024</strong><br>
+<strong style="font-size: 25px;">Oral Presentation</strong>
 
 </div>
 
