@@ -2,11 +2,13 @@
 
 <h1>Audio-Synchronized Visual Animation</h1>
 
-<a href=https://arxiv.org/abs/2403.05659><img src="https://img.shields.io/badge/arXiv-2008.00951-b31b1b.svg"></a> &nbsp;
+<a href=https://arxiv.org/abs/2403.05659><img src="https://img.shields.io/badge/arXiv-2403.05659-b31b1b.svg"></a> &nbsp;
 <a href='https://lzhangbj.github.io/projects/asva/asva.html'><img src='https://img.shields.io/badge/Project-Page-Green'></a> &nbsp;
 <a href='https://huggingface.co/spaces/Linz99/ASVA'><img src='https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face%20-Demo-blue'></a>&nbsp;
-<a href='https://www.youtube.com/watch?v=0quckDGL7hk'><img src='https://img.shields.io/badge/Youtube-Video-b31b1b.svg'></a><br>
-<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
+<a href='https://www.youtube.com/watch?v=Z8IW09yggRk'><img src='https://img.shields.io/badge/Youtube-Video-b31b1b.svg'></a><br>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>&nbsp;
+<a href='https://drive.google.com/drive/folders/1onvx5y6QOceDrHZy8-ajFJ4RUuGWwT5V?usp=sharing'><img src='https://img.shields.io/badge/Dataset-AVSync15-orange'></a>&nbsp;
+<a href='https://drive.google.com/file/d/1QcTfk1oYMP34AAw7Y12pmlMBYIcJ9Goe/view?usp=sharing'><img src='https://img.shields.io/badge/Dataset-AVSync48-orange'></a>
 
 
 <p style="font-size: 18px;">
@@ -32,6 +34,7 @@ Carnegie Mellon University<sup>2</sup>
 </div>
 
 ### Checklist
+- [x] Release AVSync15 and AVSync48 dataset
 - [x] Release pretrained checkpoints
 - [x] Release inference code on audio-conditioned image animation and sync metrics
 - [x] Release ASVA training and evaluation code
@@ -315,5 +318,12 @@ Please consider citing our paper if you find this repo useful:
     author={Lin Zhang and Shentong Mo and Yijing Zhang and Pedro Morgado},
     booktitle={Proceedings of the European Conference on Computer Vision (ECCV)},
     year={2024}
+}
+
+@article{linz2025openasva,
+    title={Scaling Up Audio-Synchronized Visual Animation: An Efficient Training Paradigm},
+    author={Lin Zhang and Zefan Cai and Yufan Zhou and Shentong Mo and Jinhong Lin and Cheng-En Wu and Yibing Wei and Yijing Zhang and Ruiyi Zhang and Wen Xiao and Tong Sun and Junjie Hu and Pedro Morgado},
+    journal={arXiv preprint arXiv:2508.03955},
+    year={2025}
 }
 ```
